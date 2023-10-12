@@ -20,7 +20,7 @@ def find_match(input:str, top_k = 3):
     input_em = SentenceTransformer('bkai-foundation-models/vietnamese-bi-encoder').encode(input).tolist()
     results = news_vectorize_data.query(query_embeddings = input_em, 
                                        n_results = top_k)
-    return results['documents'][0][0] + "\n" + results['documents'][0][1] + "\n" + results['documents'][0][2]
+    return (results, results['documents'][0][0] + "\n" + results['documents'][0][1] + "\n" + results['documents'][0][2])
 
 def query_refiner(conversation, query):
     prompt=str(f"Given the following user query and conversation log, formulate a question that would be the most relevant to provide the user with an answer from a knowledge base.\n\nCONVERSATION LOG: \n{conversation}\n\nQuery: {query}\n\nRefined Query:")
@@ -46,4 +46,8 @@ if __name__ == "__main__":
     query_embeddings=[SentenceTransformer('bkai-foundation-models/vietnamese-bi-encoder').encode("lãi suất agribank?").tolist()],
     n_results= 3
     )
-    print(results['documents'][0][0] + "\n" + results['documents'][0][1] + "\n" + results['documents'][0][2])
+    print(f'''Tìm hiểu thêm tại:
+1. {results['metadatas'][0][0]['URL']} 
+2. {results['metadatas'][0][1]['URL']}
+3. {results['metadatas'][0][2]['URL']}''')
+    # print(results)
