@@ -1,0 +1,24 @@
+# %%
+
+from sentence_transformers import SentenceTransformer
+import chromadb
+
+
+client = chromadb.Client()
+client = chromadb.PersistentClient(path="../vectorizeData/")
+news_vectorize_data = client.get_or_create_collection(name='news_vectorize_data')
+
+#vietnamese embedding model
+embedding_model = SentenceTransformer('bkai-foundation-models/vietnamese-bi-encoder')
+
+
+# %%
+results = news_vectorize_data.query(
+    query_embeddings=[SentenceTransformer('bkai-foundation-models/vietnamese-bi-encoder').encode("big4 như thế nào?").tolist()],
+    n_results=5
+    )
+results['documents']
+print(results['documents'])
+
+
+# %%
