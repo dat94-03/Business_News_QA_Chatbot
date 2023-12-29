@@ -1,6 +1,7 @@
 import os, json
+import random
 # file_path = next((os.path.join(root, 'input.json') for root, dirs, files in os.walk('/path/to/start/search') if name in files), 'File not found')
-event_path = '/Users/nguyenbathiem/Documents/GitHub/Business_News_QA_Chatbot-1/source/input.json'
+event_path = '/Users/nguyenbathiem/Documents/GitHub/Business_News_QA_Chatbot-1/source/events.json'
 with open(event_path) as f:
     events = json.load(f)
     
@@ -21,7 +22,9 @@ current_key_index = 0
 start = time.time()
 
 openai.api_key = api_keys[current_key_index]
-threshold = 0.2
+threshold = 0.6 
+# threshold = 0.7
+# threshold = 0.8
 stop_index = 0
 def AI(prompt:str,engine ="gpt-3.5-turbo"):
     completion = openai.ChatCompletion.create(
@@ -85,7 +88,7 @@ Result:
                 break
             if cos >= threshold:
                 results = {'id1': id1, 'id2': id2, 'relationship':AI(prompt)}
-                time.sleep(1)
+                time.sleep(random.randint(2, 5))
             else:
                 results = {'id1': id1, 'id2': id2, 'relationship': None}
                 
